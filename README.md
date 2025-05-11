@@ -2,4 +2,6 @@
 
 ```
 brew install uv
+
+uv run main.py
 ```
