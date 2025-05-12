@@ -58,5 +58,6 @@ def main():
     print(f"Reduction 2: {reducer.reduce_once().expression()}")
     print(f"Reduction 3: {reducer.reduce_once().expression()}")
 
+
 if __name__ == "__main__":
     main()
