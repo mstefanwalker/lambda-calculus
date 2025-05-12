@@ -12,7 +12,7 @@ def main():
             Application(
                 Variable('x'),
                 Variable('b'),
-            )
+            ),
         ),
         Variable('E')
     )
@@ -48,9 +48,9 @@ def main():
     if_true_then_1: Term = Application(
         Abstraction(
             Variable('X'),
-            if_then_else
+            if_then_else,
         ),
-        true
+        true,
     )
     print(f"If True Then 1: {if_true_then_1}")
     reducer = Reducer(if_true_then_1)
