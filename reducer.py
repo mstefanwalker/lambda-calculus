@@ -38,15 +38,23 @@ class Reducer:
     def _replace(term: Term, variable: Variable, replace: Term) -> Term:
         match term:
             case Variable():
-                if term.name == variable.name:
+                if term == variable:
                     return replace
                 else:
                     return term
             case Abstraction():
-                return Abstraction(
-                    term.input,
-                    Reducer._replace(term.body, variable, replace),
-                )
+                if term.input == variable:  # we've got a naming conflict!
+                    new_input = Reducer._variate(term.input)
+                    new_body = Reducer._change(term.body, term.input, new_input)
+                    return Abstraction(
+                        new_input,
+                        Reducer._replace(new_body, variable, replace)
+                    )
+                else:
+                    return Abstraction(
+                        term.input,
+                        Reducer._replace(term.body, variable, replace),
+                    )
             case Application():
                 return Application(
                     Reducer._replace(term.function, variable, replace),
@@ -55,5 +63,53 @@ class Reducer:
             case _:
                 return term
 
+    @staticmethod
+    def _change(term: Term, old: Variable, new: Variable) -> Term:
+        match term:
+            case Variable():
+                if term == old:
+                    return new
+                else:
+                    return term
+            case Abstraction():
+                return Abstraction(
+                    term.input,
+                    Reducer._change(term.body, old, new),
+                )
+            case Application():
+                return Application(
+                    Reducer._change(term.function, old, new),
+                    Reducer._change(term.argument, old, new),
+                )
+            case _:
+                return term
+
+        return term
+
+    @staticmethod
+    def _variate(variable: Variable) -> Variable:
+        return Variable(
+            variable.name,
+            variable.variant + 1,
+        )
+
     def expression(self) -> Term:
-        return self._expression
+        return Reducer._remove_variation(self._expression)
+
+    @staticmethod
+    def _remove_variation(term: Term) -> Term:
+        match term:
+            case Variable():
+                return Variable(term.name)
+            case Abstraction():
+                return Abstraction(
+                    Variable(term.input.name),
+                    Reducer._remove_variation(term.body)
+                )
+            case Application():
+                return Application(
+                    Reducer._remove_variation(term.function),
+                    Reducer._remove_variation(term.argument),
+                )
+            case _:
+                return term

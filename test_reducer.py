@@ -59,3 +59,35 @@ def test_deep_abstractions_reduce():
     expected: Term = Variable('1')
     reduced: Term = Reducer(if_true_then_1).reduce_once().reduce_once().reduce_once().expression()
     assert reduced == expected
+
+
+def test_logic_not_true_reduced():
+    true: Term = Abstraction(
+        Variable('a'),
+        Abstraction(
+            Variable('b'),
+            Variable('a'),
+        ),
+    )
+    false: Term = Abstraction(
+        Variable('a'),
+        Abstraction(
+            Variable('b'),
+            Variable('b'),
+        ),
+    )
+    logic_not_true: Term = Application(
+        Abstraction(
+            Variable('X'),
+            Application(
+                Application(
+                    Variable('X'),
+                    false
+                ),
+                true
+            )
+        ),
+        true
+    )
+    reduced: Term = Reducer(logic_not_true).reduce_once().reduce_once().reduce_once().expression()
+    assert str(reduced) == str(false)

@@ -11,9 +11,13 @@ class Term:
 @dataclass
 class Variable(Term):
     name: str
+    variant: int = 0
 
     def __str__(self):
-        return self.name
+        if self.variant > 0:
+            return f'{self.name}{self.variant}'
+        else:
+            return self.name
 
 
 @dataclass
