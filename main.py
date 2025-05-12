@@ -75,7 +75,25 @@ def main():
         ),
         Variable('1'),
     )
-    print(f"logic NOT concept   {logic_not_concept}")
+    print(f"logic NOT concept        {logic_not_concept}")
+    logic_not_true_illustrative: Term = Application(
+        Abstraction(
+            Variable('X'),
+            Application(
+                Application(
+                    Variable('X'),
+                    Variable('0'),
+                ),
+                Variable('1'),
+            )
+        ),
+        true
+    )
+    print(f"NOT True (0 and 1 out)   {logic_not_true_illustrative}")
+    reducer = Reducer(logic_not_true_illustrative)
+    print(f"Reduction 1              {reducer.reduce_once().expression()}")
+    print(f"Reduction 2              {reducer.reduce_once().expression()}")
+    print(f"Reduction 3              {reducer.reduce_once().expression()}")
     logic_not: Term = Application(
         Application(
             Variable('X'),
@@ -83,7 +101,8 @@ def main():
         ),
         true
     )
-    print(f"logic NOT           {logic_not}")
+    print(f"(concept)                {logic_not_concept}")
+    print(f"True/False output        {logic_not}")
     logic_not_true: Term = Application(
         Abstraction(
             Variable('X'),
@@ -97,30 +116,12 @@ def main():
         ),
         true
     )
-    print(f"logic NOT true      {logic_not_true}")
+    print(f"NOT True (full output)   {logic_not_true}")
     reducer = Reducer(logic_not_true)
-    print(f"Reduction 1         {reducer.reduce_once().expression()}")
-    print(f"Reduction 2         {reducer.reduce_once().expression()}")
-    print(f"Reduction 3         {reducer.reduce_once().expression()}")
-    logic_not_false: Term = Application(
-        Abstraction(
-            Variable('X'),
-            Application(
-                Application(
-                    Variable('X'),
-                    false
-                ),
-                true
-            )
-        ),
-        false
-    )
-    print(f"logic NOT false     {logic_not_false}")
-    reducer = Reducer(logic_not_false)
-    print(f"Reduction 1         {reducer.reduce_once().expression()}")
-    print(f"Reduction 2         {reducer.reduce_once().expression()}")
-    print(f"Reduction 3         {reducer.reduce_once().expression()}")
-
+    print(f"Reduction 1              {reducer.reduce_once().expression()}")
+    print(f"Reduction 2              {reducer.reduce_once().expression()}")
+    print(f"Reduction 3              {reducer.reduce_once().expression()}")
+    
 
 if __name__ == "__main__":
     main()
