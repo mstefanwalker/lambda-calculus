@@ -9,3 +9,9 @@ uv run main.py
 
 uvx pytest
 ```
+
+```
+((λx.(xb))E)
+(Eb)
+```
+
