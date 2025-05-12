@@ -1,9 +1,11 @@
 from dataclasses import dataclass
+from copy import deepcopy
 
 
 @dataclass
 class Term:
-    pass
+    def copy(self):
+        return deepcopy(self)
 
 
 @dataclass

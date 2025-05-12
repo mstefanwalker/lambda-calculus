@@ -9,21 +9,30 @@ class Reducer:
         self._expression = expression
 
     def reduce_once(self) -> 'Reducer':
-        expression = self._expression
-        match expression:
+        self._expression = self._reduce_once(self._expression)
+        return self
+
+    @staticmethod
+    def _reduce_once(term: Term) -> Term:
+        match term:
             case Variable():
                 pass
             case Abstraction():
                 pass
             case Application():
-                function = expression.function
-                argument = expression.argument
-                if isinstance(function, Abstraction):
-                    result = self._replace(function.body, function.input, argument)
-                    self._expression = result
+                function = term.function
+                argument = term.argument
+                match function:
+                    case Abstraction():
+                        return Reducer._replace(function.body, function.input, argument)
+                    case Application():
+                        return Application(
+                            Reducer._reduce_once(function),
+                            argument,
+                        )
             case _:
                 pass
-        return self
+        return term
 
     @staticmethod
     def _replace(term: Term, variable: Variable, replace: Term) -> Term:
