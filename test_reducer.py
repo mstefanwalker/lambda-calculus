@@ -33,6 +33,7 @@ def test_expression_is_reduced_once():
     )
     assert str(Reducer(expression).reduce_once().expression()) == str(expected)
 
+
 def test_deep_abstractions_reduce():
     true: Term = Abstraction(
         Variable('a'),
