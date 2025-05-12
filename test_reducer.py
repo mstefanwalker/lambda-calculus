@@ -2,6 +2,21 @@ from reducer import Reducer
 from lambda_term import Term, Variable, Abstraction, Application
 
 
+def test_variable_equality():
+    assert Variable('a') == Variable('a')
+    assert Variable('a') != Variable('b')
+
+
+def test_abstraction_equality():
+    assert Abstraction(Variable('a'), Variable('b')) == Abstraction(Variable('a'), Variable('b'))
+    assert Abstraction(Variable('a'), Variable('x')) != Abstraction(Variable('a'), Variable('y'))
+
+
+def test_application_equality():
+    assert Application(Variable('a'), Variable('b')) == Application(Variable('a'), Variable('b'))
+    assert Application(Variable('a'), Variable('x')) != Application(Variable('a'), Variable('y'))
+
+
 def test_expression_is_unmodified():
     expression: Term = Application(
         Abstraction(
@@ -13,7 +28,7 @@ def test_expression_is_unmodified():
         ),
         Variable('E')
     )
-    assert str(expression) == str(Reducer(expression).expression())
+    assert expression == Reducer(expression).expression()
 
 
 def test_expression_is_reduced_once():
@@ -31,7 +46,7 @@ def test_expression_is_reduced_once():
         Variable('E'),
         Variable('b')
     )
-    assert str(Reducer(expression).reduce_once().expression()) == str(expected)
+    assert Reducer(expression).reduce_once().expression() == expected
 
 
 def test_deep_abstractions_reduce():
@@ -58,4 +73,4 @@ def test_deep_abstractions_reduce():
     )
     expected: Term = Variable('1')
     reduced: Term = Reducer(if_true_then_1).reduce_once().reduce_once().reduce_once().expression()
-    assert str(reduced) == str(expected)
+    assert reduced == expected
