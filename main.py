@@ -58,6 +58,34 @@ def main():
     print(f"Reduction 2:    {reducer.reduce_once().expression()}")
     print(f"Reduction 3:    {reducer.reduce_once().expression()}")
 
+    print()
+    logic_not_concept: Term = Application(
+        Application(
+            Variable('X'),
+            Variable('0'),
+        ),
+        Variable('1'),
+    )
+    print(f"logic NOT concept: {logic_not_concept}")
+    logic_not_true: Term = Application(
+        Abstraction(
+            Variable('X'),
+            Application(
+                Application(
+                    Variable('X'),
+                    false
+                ),
+                true
+            )
+        ),
+        true
+    )
+    print(f"logic NOT true:    {logic_not_true}")
+    reducer = Reducer(logic_not_true)
+    print(f"Reduction 1:       {reducer.reduce_once().expression()}")
+    print(f"Reduction 2:       {reducer.reduce_once().expression()}")
+    print(f"Reduction 3:       {reducer.reduce_once().expression()}")
+
 
 if __name__ == "__main__":
     main()
