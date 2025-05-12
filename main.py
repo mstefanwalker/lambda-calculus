@@ -5,6 +5,9 @@ from reducer import Reducer
 def main():
     print("Hello from lambda-calculus!")
 
+    # ====================
+    #      Reduction
+    # ====================
     print()
     expression: Term = Application(
         Abstraction(
@@ -20,6 +23,9 @@ def main():
     reduced_once = Reducer(expression).reduce_once().expression()
     print(f"Reduced:    {reduced_once}")
 
+    # ====================
+    #    True and False
+    # ====================
     print()
     true: Term = Abstraction(
         Variable('a'),
@@ -58,6 +64,9 @@ def main():
     print(f"Reduction 2:    {reducer.reduce_once().expression()}")
     print(f"Reduction 3:    {reducer.reduce_once().expression()}")
 
+    # ====================
+    #     Logical NOT
+    # ====================
     print()
     logic_not_concept: Term = Application(
         Application(
@@ -67,6 +76,14 @@ def main():
         Variable('1'),
     )
     print(f"logic NOT concept: {logic_not_concept}")
+    logic_not: Term = Application(
+        Application(
+            Variable('X'),
+            false
+        ),
+        true
+    )
+    print(f"logic NOT:         {logic_not}")
     logic_not_true: Term = Application(
         Abstraction(
             Variable('X'),
@@ -82,6 +99,24 @@ def main():
     )
     print(f"logic NOT true:    {logic_not_true}")
     reducer = Reducer(logic_not_true)
+    print(f"Reduction 1:       {reducer.reduce_once().expression()}")
+    print(f"Reduction 2:       {reducer.reduce_once().expression()}")
+    print(f"Reduction 3:       {reducer.reduce_once().expression()}")
+    logic_not_false: Term = Application(
+        Abstraction(
+            Variable('X'),
+            Application(
+                Application(
+                    Variable('X'),
+                    false
+                ),
+                true
+            )
+        ),
+        false
+    )
+    print(f"logic NOT false:   {logic_not_false}")
+    reducer = Reducer(logic_not_false)
     print(f"Reduction 1:       {reducer.reduce_once().expression()}")
     print(f"Reduction 2:       {reducer.reduce_once().expression()}")
     print(f"Reduction 3:       {reducer.reduce_once().expression()}")
